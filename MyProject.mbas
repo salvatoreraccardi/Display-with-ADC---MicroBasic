@@ -1,0 +1,38 @@
+program MyProject
+' Si vuole acquisire con conversione a 8bit, il segnale
+' analogico presente sul canale AN0/RA0 e dopo un secondo
+' quello presente si AN1/RA1. I valori esadecimali delle
+' tensioni acquisite vanno visualizzate su due display 7 segmenti,
+' collegati alla porta B. L'acquisizione va ripetuta ogni 5 secondi.
+' Vanno utilizzati i timer per generare i ritardi. La sorgente della
+' tensione di rifermento del convertitore è Vdd = 5V.
+  dim signal0, signal1 as float
+  dim k as byte
+  sub function tmr(dim tempo as byte) as longint
+       for k=1 to tempo * 2
+         tmr1L= 0xDC
+         tmr1H= 0x0B
+         t1con =49
+         while pir1.0 = 0
+         wend
+          pir1.0 = 0
+      next k
+       result = 0
+  end sub
+  
+main:
+'   Main program 
+adcon1 = 128
+trisb = 0
+while true
+      signal0 = adc_read(0)
+      tmr(1)
+      signal1 = adc_read(1)
+      '//visualizza su display
+       portb = signal0 / 4
+      ' portb = signal1 / 64
+      'portb = %11110000
+      'portb = signal1 * 64
+      'tmr(5)
+wend
+end.
